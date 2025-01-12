@@ -18,9 +18,10 @@ struct LocationActivationView: View {
             
             Spacer()
         }
-        .frame(width: UIScreen.main.bounds.width - 64, height: 50)
+        .frame(height: 50)
         .foregroundStyle(Color.gray)
         .rounded()
+        .padding(.horizontal)
     }
 }
 

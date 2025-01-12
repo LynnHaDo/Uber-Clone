@@ -8,10 +8,10 @@
 import SwiftUI
 
 extension View {
-    func rounded() -> some View {
+    func rounded(background: Color = Color.white) -> some View {
         return self.background(
             Rectangle()
-                .fill(Color.white)
+                .fill(background)
                 .clipShape(.rect(cornerRadius: 8))
                 .shadow(color: .gray, radius: 3)
         )

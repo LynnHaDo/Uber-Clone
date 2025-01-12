@@ -8,16 +8,24 @@
 import SwiftUI
 
 struct MapToggler: View {
+    @Binding var showLocationSearchView: Bool
+    
     var body: some View {
-        Button {
+        HStack {
+            Button {
+                withAnimation(.spring()) {
+                    showLocationSearchView.toggle()
+                }
+            } label: {
+                Image(systemName: showLocationSearchView ? "arrow.left" : "line.3.horizontal")
+                    
+                    .frame(width: 16, height: 16)
+                    .foregroundColor(.black)
+                    .padding()
+                    .rounded()
+            }
             
-        } label: {
-            Image(systemName: "line.3.horizontal")
-                .font(.title3)
-                .foregroundColor(.black)
-                .padding()
-                .rounded()
-                
+            Spacer()
         }
     }
 }

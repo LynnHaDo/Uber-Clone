@@ -8,17 +8,33 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var showLocationSearchView: Bool = false;
+    
     var body: some View {
         ZStack(alignment: .top) {
             MapViewRepresentable().ignoresSafeArea()
             
             
-            VStack(alignment: .leading) {
-                MapToggler()
-                
+            if showLocationSearchView {
+                ZStack {
+                    Color.main.ignoresSafeArea()
+                    LocationSearchView()
+                        .padding(.top, 80)
+                }
+            } else {
                 LocationActivationView()
-                    .padding(.top, 20)
+                    .padding(.top, 80)
+                    .onTapGesture {
+                        withAnimation(.spring()) {
+                            showLocationSearchView.toggle()
+                        }
+                    }
             }
+            
+            MapToggler(showLocationSearchView: $showLocationSearchView)
+                .padding(.leading)
+                .padding(.top, 10)
+                
         }
     }
 }
