@@ -18,7 +18,7 @@ struct HomeView: View {
             if showLocationSearchView {
                 ZStack {
                     Color.main.ignoresSafeArea()
-                    LocationSearchView()
+                    LocationSearchView(show: $showLocationSearchView)
                         .padding(.top, 80)
                 }
             } else {
@@ -40,5 +40,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    //HomeView()
 }
