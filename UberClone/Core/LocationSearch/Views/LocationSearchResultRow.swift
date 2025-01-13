@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct LocationSearchResultRow: View {
+    let name: String
+    let address: String
+    
     var body: some View {
         HStack(alignment: .center) {
             Image(systemName: "pin.circle.fill")
@@ -17,12 +20,12 @@ struct LocationSearchResultRow: View {
                 .frame(width: 40, height: 40)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Mount Holyoke College")
+                Text(name)
                     .font(.headline)
                     .frame(alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundStyle(.text)
-                Text("50 College Street, MA 01075, United States")
+                Text(address)
                     .font(.subheadline)
                     .frame(alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
@@ -39,5 +42,5 @@ struct LocationSearchResultRow: View {
 }
 
 #Preview {
-    LocationSearchResultRow()
+    LocationSearchResultRow(name: "Mount Holyoke College", address: "50 College Street, MA 01075, United States")
 }
