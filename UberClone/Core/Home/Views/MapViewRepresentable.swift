@@ -26,7 +26,7 @@ struct MapViewRepresentable: UIViewRepresentable {
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
         if let selectedLocationCoordinate = locationViewModel.selectedLocationCoordinate {
-            print("DEBUG: Location coordinates \(selectedLocationCoordinate)")
+            context.coordinator.addAndSelectAnnotation(for: selectedLocationCoordinate)
         }
     }
     
@@ -38,12 +38,18 @@ struct MapViewRepresentable: UIViewRepresentable {
 extension MapViewRepresentable {
     // Provides the map view with functionalities from the map ui kit
     class MapCoordinator: NSObject, MKMapViewDelegate {
+        // MARK: - Properties
+        
         let parent: MapViewRepresentable
+        
+        // MARK: - Lifecycle
         
         init(parent: MapViewRepresentable) {
             self.parent = parent
             super.init()
         }
+        
+        // MARK: - MKMapViewDelegate
         
         func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
             let region = MKCoordinateRegion(
@@ -57,6 +63,22 @@ extension MapViewRepresentable {
             )
             
             parent.mapView.setRegion(region, animated: true)
+        }
+        
+        // MARK: - Helpers
+        
+        func addAndSelectAnnotation(for coordinate: CLLocationCoordinate2D) {
+            // Remove all preexisiting annotation(s)
+            self.parent.mapView.removeAnnotations(parent.mapView.annotations)
+            
+            // Create annotation for the given coordinate
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            self.parent.mapView.addAnnotation(annotation) // add it
+            self.parent.mapView.selectAnnotation(annotation, animated: true) // select and animate the view
+            
+            // Zoom to the area containing the annotations
+            self.parent.mapView.showAnnotations(self.parent.mapView.annotations, animated: true)
         }
     }
 }
