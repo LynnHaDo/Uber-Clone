@@ -8,30 +8,35 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var showLocationSearchView: Bool = false;
+    @State private var mapState = MapViewState.blank
     
     var body: some View {
         ZStack(alignment: .top) {
-            MapViewRepresentable().ignoresSafeArea()
+            MapViewRepresentable(mapState: $mapState)
+                .ignoresSafeArea()
             
-            
-            if showLocationSearchView {
-                ZStack {
-                    Color.main.ignoresSafeArea()
-                    LocationSearchView(show: $showLocationSearchView)
-                        .padding(.top, 80)
-                }
-            } else {
+            if mapState == .blank {
                 LocationActivationView()
-                    .padding(.top, 80)
                     .onTapGesture {
                         withAnimation(.spring()) {
-                            showLocationSearchView.toggle()
+                            mapState = .selectingLocation
                         }
                     }
+                    .padding(.top, 80)
+            }
+            else if mapState == .selectingLocation {
+                ZStack {
+                    Color.main.ignoresSafeArea()
+                    LocationSearchView(mapState: $mapState)
+                        .padding(.top, 80)
+                }
+            }
+            else if mapState == .locationSelected {
+                VStack { }
+                    .padding(.top, 80)
             }
             
-            MapToggler(showLocationSearchView: $showLocationSearchView)
+            MapToggler(mapState: $mapState)
                 .padding(.leading)
                 .padding(.top, 10)
                 

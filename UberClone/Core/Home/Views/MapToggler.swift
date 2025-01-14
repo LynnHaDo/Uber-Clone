@@ -8,17 +8,36 @@
 import SwiftUI
 
 struct MapToggler: View {
-    @Binding var showLocationSearchView: Bool
+    @Binding var mapState: MapViewState
+    
+    func handlerFor(_ state: MapViewState) {
+        switch state {
+        case .blank:
+            print("DEBUG: Default state")
+        case .selectingLocation:
+            mapState = .blank
+        case .locationSelected:
+            mapState = .blank 
+        }
+    }
+    
+    func imageFor(_ state: MapViewState) -> String {
+        switch state {
+        case .blank:
+            return "line.3.horizontal"
+        case .selectingLocation, .locationSelected:
+            return "arrow.left"
+        }
+    }
     
     var body: some View {
         HStack {
             Button {
                 withAnimation(.spring()) {
-                    showLocationSearchView.toggle()
+                    handlerFor(mapState)
                 }
             } label: {
-                Image(systemName: showLocationSearchView ? "arrow.left" : "line.3.horizontal")
-                    
+                Image(systemName: imageFor(mapState))
                     .frame(width: 16, height: 16)
                     .foregroundColor(.black)
                     .padding()

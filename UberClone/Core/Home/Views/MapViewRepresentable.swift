@@ -11,7 +11,7 @@ import MapKit
 struct MapViewRepresentable: UIViewRepresentable {
     let mapView = MKMapView()
     let locationManager = LocationManager()
-    
+    @Binding var mapState: MapViewState
     @EnvironmentObject var locationViewModel: LocationSearchViewModel
     
     // Make a map view
@@ -25,11 +25,22 @@ struct MapViewRepresentable: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
-        if let selectedLocationCoordinate = locationViewModel.selectedLocationCoordinate {
-            // Add the destination pin
-            context.coordinator.addAndSelectAnnotation(for: selectedLocationCoordinate)
-            // Get a polyline that represents the route
-            context.coordinator.configurePolyline(destination: selectedLocationCoordinate)
+        print("DEBUG: Map state is: \(mapState)")
+        
+        switch mapState {
+            case .blank:
+                context.coordinator.clearMapViewAndRecenter()
+                break
+            case .selectingLocation:
+                break
+            case .locationSelected:
+                if let selectedLocationCoordinate = locationViewModel.selectedLocationCoordinate {
+                    // Add the destination pin
+                    context.coordinator.addAndSelectAnnotation(for: selectedLocationCoordinate)
+                    // Get a polyline that represents the route
+                    context.coordinator.configurePolyline(destination: selectedLocationCoordinate)
+                }
+                break
         }
     }
     
@@ -45,6 +56,7 @@ extension MapViewRepresentable {
         
         let parent: MapViewRepresentable
         var userLocationCoordinate: CLLocationCoordinate2D?
+        var currentRegion: MKCoordinateRegion?
         
         // MARK: - Lifecycle
         
@@ -69,6 +81,7 @@ extension MapViewRepresentable {
                 )
             )
             
+            self.currentRegion = region // update the current region of interest
             self.parent.mapView.setRegion(region, animated: true)
         }
         
@@ -131,6 +144,18 @@ extension MapViewRepresentable {
                 
                 guard let route = response?.routes.first else { return }
                 completion(route)
+            }
+        }
+        
+        func clearMapViewAndRecenter() {
+            // Remove all preexisiting annotation(s)
+            self.parent.mapView.removeAnnotations(parent.mapView.annotations)
+            
+            // Remove any previous overlays
+            self.parent.mapView.removeOverlays(self.parent.mapView.overlays)
+            
+            if let currentRegion = currentRegion {
+                self.parent.mapView.setRegion(currentRegion, animated: true)
             }
         }
     }
