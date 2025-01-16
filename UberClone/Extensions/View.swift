@@ -16,4 +16,12 @@ extension View {
                 .shadow(color: .gray, radius: 3)
         )
     }
+    
+    func roundedNoShadow(background: Color = Color.white) -> some View {
+        return self.background(
+            Rectangle()
+                .fill(background)
+                .clipShape(.rect(cornerRadius: 8))
+        )
+    }
 }

@@ -70,7 +70,3 @@ struct LocationSearchView: View {
         }
     }
 }
-
-#Preview {
-    LocationSearchView(mapState: .constant(.selectingLocation))
-}
