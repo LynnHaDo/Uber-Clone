@@ -105,7 +105,6 @@ extension MapViewRepresentable {
             annotation.coordinate = coordinate
             self.parent.mapView.addAnnotation(annotation) // add it
             self.parent.mapView.selectAnnotation(annotation, animated: true) // select and animate the view
-            
             // Zoom to the area containing the annotations
             self.parent.mapView.showAnnotations(self.parent.mapView.annotations, animated: true)
         }
@@ -118,8 +117,12 @@ extension MapViewRepresentable {
             
             getRoute(from: userLocationCoordinate, to: destCoordinate) {
                 route in
-                
+                let rect = self.parent.mapView.mapRectThatFits(
+                    route.polyline.boundingMapRect,
+                    edgePadding: .init(top: 80, left: 16, bottom: 550, right: 16)
+                )
                 self.parent.mapView.addOverlay(route.polyline)
+                self.parent.mapView.setRegion(MKCoordinateRegion(rect), animated: true)
             }
         }
         
