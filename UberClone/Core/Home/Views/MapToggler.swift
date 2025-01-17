@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MapToggler: View {
     @Binding var mapState: MapViewState
+    @EnvironmentObject var locationViewModel: LocationSearchViewModel
     
     func handlerFor(_ state: MapViewState) {
         switch state {
@@ -17,7 +18,8 @@ struct MapToggler: View {
         case .selectingLocation:
             mapState = .blank
         case .locationSelected:
-            mapState = .blank 
+            mapState = .blank
+            locationViewModel.selectedLocationCoordinate = nil 
         }
     }
     

@@ -107,7 +107,7 @@ struct RideRequestView: View {
                     .regular()
                     .fontWeight(.medium)
                     .padding(6)
-                    .roundedNoShadow(background: .blue)
+                    .roundedNoShadow(background: .lightBlue)
                     .padding()
                 
                 Text("**** 1234")
@@ -130,7 +130,7 @@ struct RideRequestView: View {
                 Text("Confirm ride")
                     .heading3()
                     .frame(width: UIScreen.main.bounds.width - 32, height: 50)
-                    .roundedNoShadow(background: Color.blue)
+                    .roundedNoShadow(background: Color.lightBlue)
             }
             .padding(.top)
             .padding(.bottom, 32)

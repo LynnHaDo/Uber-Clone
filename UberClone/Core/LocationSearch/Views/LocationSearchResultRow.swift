@@ -12,30 +12,33 @@ struct LocationSearchResultRow: View {
     let address: String
     
     var body: some View {
-        HStack(alignment: .center) {
+        HStack(alignment: .lastTextBaseline) {
             Image(systemName: "pin.circle.fill")
                 .resizable()
                 .foregroundStyle(.lightBlue)
                 .tint(.white)
                 .frame(width: 40, height: 40)
+                .padding(.trailing, 8)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(name)
-                    .font(.headline)
-                    .frame(alignment: .leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .foregroundStyle(.text)
-                Text(address)
-                    .font(.subheadline)
-                    .frame(alignment: .leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .foregroundStyle(Color(.systemGray3))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(name)
+                        .headline()
+                        .frame(alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .foregroundStyle(.text)
+                    Text(address)
+                        .regular()
+                        .frame(alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .foregroundStyle(Color(.systemGray3))
+                }
+                .padding(.vertical, 8)
                 
                 Divider()
                     .overlay(.text)
+                    .padding(.vertical, 8)
             }
-            .padding(.leading, 8)
-            .padding(.vertical, 8)
         }
         .padding(.horizontal)
     }

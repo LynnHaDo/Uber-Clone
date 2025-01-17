@@ -24,6 +24,9 @@ extension Text {
         self.font(Font.custom("WorkSansRoman-Medium", size: 18))
             .textCase(.uppercase)
     }
+    func headline() -> some View {
+        self.font(Font.custom("WorkSansRoman-SemiBold", size: 18))
+    }
     func regular() -> some View {
         self.font(Font.custom("WorkSans-Regular", size: 16))
     }
