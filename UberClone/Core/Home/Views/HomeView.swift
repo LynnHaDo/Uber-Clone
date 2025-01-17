@@ -11,39 +11,48 @@ struct HomeView: View {
     @State private var mapState = MapViewState.blank
     
     var body: some View {
-        ZStack(alignment: .top) {
-            MapViewRepresentable(mapState: $mapState)
-                .ignoresSafeArea()
-            
-            if mapState == .blank {
-                LocationActivationView()
-                    .onTapGesture {
-                        withAnimation(.spring()) {
-                            mapState = .selectingLocation
+        ZStack(alignment: .bottom) {
+            ZStack(alignment: .top) {
+                MapViewRepresentable(mapState: $mapState)
+                    .ignoresSafeArea()
+                
+                if mapState == .blank {
+                    LocationActivationView()
+                        .onTapGesture {
+                            withAnimation(.spring()) {
+                                mapState = .selectingLocation
+                            }
                         }
-                    }
-                    .padding(.top, 80)
-            }
-            else if mapState == .selectingLocation {
-                ZStack {
-                    Color.main.ignoresSafeArea()
-                    LocationSearchView(mapState: $mapState)
                         .padding(.top, 80)
                 }
-            }
-            else if mapState == .locationSelected {
-                VStack { }
-                    .padding(.top, 80)
+                else if mapState == .selectingLocation {
+                    ZStack {
+                        Color.main.ignoresSafeArea()
+                        LocationSearchView(mapState: $mapState)
+                            .padding(.top, 80)
+                    }
+                }
+                else if mapState == .locationSelected {
+                    VStack { }
+                        .padding(.top, 80)
+                }
+                
+                MapToggler(mapState: $mapState)
+                    .padding(.leading)
+                    .padding(.top, 10)
+                
             }
             
-            MapToggler(mapState: $mapState)
-                .padding(.leading)
-                .padding(.top, 10)
-                
+            if mapState == .locationSelected {
+                RideRequestView()
+                    .transition(.move(edge: .bottom)) // to move it up from the bottom edge
+            }
         }
+        .ignoresSafeArea(edges: [.bottom])
     }
 }
 
 #Preview {
-    //HomeView()
+    HomeView()
+        .environmentObject(LocationSearchViewModel())
 }

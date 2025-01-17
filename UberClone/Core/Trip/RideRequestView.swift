@@ -89,7 +89,7 @@ struct RideRequestView: View {
                                 .padding(8)
                             }
                             .frame(width: 112, height: 140)
-                            .rounded(background: Color(.gray))
+                            .roundedNoShadow(background: Color(.gray))
                         }
                     }
                 }
@@ -111,6 +111,7 @@ struct RideRequestView: View {
                     .padding()
                 
                 Text("**** 1234")
+                    .regular()
                 Spacer()
                 
                 Image(systemName: "chevron.right")
