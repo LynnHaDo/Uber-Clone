@@ -14,6 +14,7 @@ struct RideRequestView: View {
     private var types: FetchedResults<RideType>
     
     @State private var selectedRideType: Int = 1
+    @EnvironmentObject var locationViewModel: LocationSearchViewModel
     
     var body: some View {
         VStack {
@@ -90,7 +91,8 @@ struct RideRequestView: View {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(type.name!)
                                         .regular()
-                                    Text("$\(String(format:"%.2f", type.baseFare))")
+                                    Text( locationViewModel.computeRidePrice(forType: type)
+                                        .toCurrency())
                                         .regular()
                                 }
                                 .fontWeight(.semibold)
@@ -156,5 +158,7 @@ struct RideRequestView: View {
 }
 
 #Preview {
-    RideRequestView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    RideRequestView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(LocationSearchViewModel())
 }
