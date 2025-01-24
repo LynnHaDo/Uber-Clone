@@ -10,7 +10,7 @@ import MapKit
 
 struct MapViewRepresentable: UIViewRepresentable {
     let mapView = MKMapView()
-    let locationManager = LocationManager()
+    let locationManager = LocationManager.shared
     @Binding var mapState: MapViewState
     @EnvironmentObject var locationViewModel: LocationSearchViewModel
     
@@ -25,7 +25,7 @@ struct MapViewRepresentable: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
-        print("DEBUG: Map state is: \(mapState)")
+        // print("DEBUG: Map state is: \(mapState)")
         
         switch mapState {
             case .blank:
@@ -88,7 +88,7 @@ extension MapViewRepresentable {
         // Draw the polyline onto the map
         func mapView(_ mapView: MKMapView, rendererFor overlay: any MKOverlay) -> MKOverlayRenderer {
             let routePolyline = MKPolylineRenderer(overlay: overlay)
-            routePolyline.strokeColor = .lightBlue
+            routePolyline.strokeColor = .main
             routePolyline.lineWidth = 6
             return routePolyline
         }

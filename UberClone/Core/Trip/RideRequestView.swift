@@ -8,6 +8,13 @@
 import SwiftUI
 
 struct RideRequestView: View {
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \RideType.id, ascending: true)],
+        animation: .default)
+    private var types: FetchedResults<RideType>
+    
+    @State private var selectedRideType: Int = 1
+    
     var body: some View {
         VStack {
             // View handle
@@ -72,24 +79,31 @@ struct RideRequestView: View {
                 
                 ScrollView(.horizontal) {
                     HStack(spacing: 16) {
-                        ForEach(0..<3, id: \.self) {
-                            _ in
+                        ForEach(types) {
+                            type in
                             VStack(alignment: .leading) {
-                                Image(.uberX)
+                                Image(type.name!)
                                     .resizable()
                                     .scaledToFit()
+                                    .frame(width: 90)
                                 
-                                VStack(spacing: 4) {
-                                    Text("UberX")
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(type.name!)
                                         .regular()
-                                    Text("$23.13")
+                                    Text("$\(String(format:"%.2f", type.baseFare))")
                                         .regular()
                                 }
                                 .fontWeight(.semibold)
-                                .padding(8)
                             }
-                            .frame(width: 112, height: 140)
-                            .roundedNoShadow(background: Color(.gray))
+                            .frame(width: 100)
+                            .padding()
+                            .scaleEffect(type.id == selectedRideType ? 1.1 : 1.0)
+                            .roundedNoShadow(background: Color(type.id == selectedRideType ? .lightBlue : .gray ))
+                            .onTapGesture {
+                                withAnimation(.spring()) {
+                                    selectedRideType = Int(type.id)
+                                }
+                            }
                         }
                     }
                 }
@@ -142,5 +156,5 @@ struct RideRequestView: View {
 }
 
 #Preview {
-    RideRequestView()
+    RideRequestView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
