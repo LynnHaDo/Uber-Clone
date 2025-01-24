@@ -54,9 +54,12 @@ struct RideRequestView: View {
                     .padding(.bottom, 23)
                     
                     HStack {
-                        Text("Destination")
-                            .regular()
-                            .fontWeight(.semibold)
+                        if let location = locationViewModel.selectedLocation {
+                            Text(location.title)
+                                .regular()
+                                .fontWeight(.semibold)
+                        }
+                        
                         Spacer()
                         Text("1:30 PM")
                             .small()

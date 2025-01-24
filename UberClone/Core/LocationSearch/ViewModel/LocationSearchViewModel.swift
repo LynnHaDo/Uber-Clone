@@ -10,7 +10,7 @@ import Foundation
 
 class LocationSearchViewModel: NSObject, ObservableObject {
     @Published var results = [MKLocalSearchCompletion]()
-    @Published var selectedLocationCoordinate: CLLocationCoordinate2D?
+    @Published var selectedLocation: Location?
     
     private let searchCompleter = MKLocalSearchCompleter()
     var queryFragment: String = "" {
@@ -44,13 +44,14 @@ class LocationSearchViewModel: NSObject, ObservableObject {
             }
             
             guard let item = response?.mapItems.first else { return }
-            self.selectedLocationCoordinate = item.placemark.coordinate
+            self.selectedLocation = Location(title: location.title,
+                                             coordinate: item.placemark.coordinate)
         }
         
     }
     
     func computeRidePrice(forType type: RideType) -> Double {
-        guard let destination = selectedLocationCoordinate else { return 0 }
+        guard let destination = selectedLocation?.coordinate else { return 0 }
         guard let start = self.userLocation else { return 0 }
         
         let userLocation = CLLocation(latitude: start.latitude,

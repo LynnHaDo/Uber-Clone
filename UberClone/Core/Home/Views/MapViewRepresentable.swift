@@ -34,7 +34,7 @@ struct MapViewRepresentable: UIViewRepresentable {
             case .selectingLocation:
                 break
             case .locationSelected:
-                if let selectedLocationCoordinate = locationViewModel.selectedLocationCoordinate {
+                if let selectedLocationCoordinate = locationViewModel.selectedLocation?.coordinate {
                     // Add the destination pin
                     context.coordinator.addAndSelectAnnotation(for: selectedLocationCoordinate)
                     // Get a polyline that represents the route

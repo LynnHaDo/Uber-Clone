@@ -60,5 +60,6 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(LocationSearchViewModel())
 }

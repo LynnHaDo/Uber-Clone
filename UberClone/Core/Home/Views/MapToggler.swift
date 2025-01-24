@@ -19,7 +19,7 @@ struct MapToggler: View {
             mapState = .blank
         case .locationSelected:
             mapState = .blank
-            locationViewModel.selectedLocationCoordinate = nil 
+            locationViewModel.selectedLocation = nil 
         }
     }
     
