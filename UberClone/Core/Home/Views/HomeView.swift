@@ -44,7 +44,7 @@ struct HomeView: View {
                 
             }
             
-            if mapState == .locationSelected {
+            if mapState == .locationSelected || mapState == .polylineAdded {
                 RideRequestView()
                     .transition(.move(edge: .bottom)) // to move it up from the bottom edge
             }
@@ -60,6 +60,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
-        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(LocationSearchViewModel())
 }

@@ -17,18 +17,18 @@ struct MapToggler: View {
             print("DEBUG: Default state")
         case .selectingLocation:
             mapState = .blank
-        case .locationSelected:
+        case .locationSelected, .polylineAdded:
             mapState = .blank
-            locationViewModel.selectedLocation = nil 
+            locationViewModel.selectedLocation = nil
         }
     }
     
     func imageFor(_ state: MapViewState) -> String {
         switch state {
-        case .blank:
-            return "line.3.horizontal"
         case .selectingLocation, .locationSelected:
             return "arrow.left"
+        default:
+            return "line.3.horizontal"
         }
     }
     
